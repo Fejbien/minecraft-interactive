@@ -1,0 +1,10 @@
+[
+    {
+        "link": "/foods",
+        "name": "Food list"
+    },
+    {
+       "link": "/items",
+       "name": "Itema list"
+    }
+]
