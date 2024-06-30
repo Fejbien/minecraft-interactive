@@ -60,17 +60,17 @@ function EnchantmentsItemsPage() {
                     placeholder="Search items..."
                 />
             </div>
-            <ul className="suggestions mt-4">
-                {filteredItems.map((item) => (
-                    <li
-                        key={item.id}
-                        onClick={() => handleSelectItem(item)}
-                        className="suggestion-item text-center p-2 hover:bg-gray-700 cursor-pointer"
-                    >
-                        {item.name}
-                    </li>
-                ))}
-            </ul>
+            <div className="w-full flex justify-center items-center">
+                <div className="suggestions mt-4 flex flex-row flex-wrap gap-4 w-3/5 items-center justify-center">
+                    {filteredItems.map((item) => (
+                        <SuggestionItem
+                            key={item.name}
+                            item={item}
+                            handleClick={() => handleSelectItem(item)}
+                        />
+                    ))}
+                </div>
+            </div>
             {selectedItem && (
                 <div className="mt-4 flex flex-col w-full justify-center items-center">
                     <h2 className="text-center">
@@ -90,6 +90,23 @@ function EnchantmentsItemsPage() {
     );
 }
 
+SuggestionItem.propTypes = {
+    item: PropTypes.object.isRequired,
+    handleClick: PropTypes.func.isRequired,
+};
+
+function SuggestionItem({ item, handleClick }) {
+    return (
+        <div
+            onClick={handleClick}
+            className="suggestion-item text-center p-2 text-slate-800 font-mcFont cursor-pointer bg-slate-50 rounded-md text-4xl
+            hover:bg-slate-100 transition duration-300 ease-in-out transform hover:scale-105"
+        >
+            {item.displayName}
+        </div>
+    );
+}
+
 EnchantTile.propTypes = {
     enchant: PropTypes.object.isRequired,
 };
@@ -98,7 +115,9 @@ function EnchantTile({ enchant }) {
     console.log(enchant);
     return (
         <div className="text-slate-900 bg-gray-100 rounded-lg shadow-md w-3/5 flex flex-row items-center justify-evenly p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">
-            <h2 className="text-center">{enchant.displayName}</h2>
+            <h2 className="text-center font-mcFont text-4xl">
+                {enchant.displayName}
+            </h2>
             <p className="">Max lvl: {enchant.maxLevel}</p>
             <p>Treasure only: {enchant.treasureOnly ? "Yes" : "No"}</p>
             <p>Curse: {enchant.curse ? "Yes" : "No"}</p>
