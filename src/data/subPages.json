@@ -6,5 +6,9 @@
     {
        "link": "/items",
        "name": "Itema list"
+    },
+    {
+        "link": "/enchants",
+        "name": "Enchants list"
     }
 ]

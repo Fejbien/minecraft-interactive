@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
 
 import ItemsPage from "./pages/ItemsPage";
+import FoodPage from "./pages/FoodPage";
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                     <Route index element={<Home />} />
                     <Route path="*" element={<NoPage />} />
                     <Route path="/items" element={<ItemsPage />} />
+                    <Route path="/foods" element={<FoodPage />} />
                 </Routes>
             </BrowserRouter>
         </div>

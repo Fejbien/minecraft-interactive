@@ -1,9 +1,9 @@
-import itemsList from "../data/items.json";
-import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import foodsList from "../data/foods.json";
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
-function ItemsPage() {
+function FoodPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [imagesUrls, setImagesUrls] = useState({});
 
@@ -11,7 +11,7 @@ function ItemsPage() {
         const loadItemIcons = async () => {
             try {
                 const icons = {};
-                for (const item of itemsList) {
+                for (const item of foodsList) {
                     const response = await fetch(
                         `../itemIcons/${item.name}.png`
                     );
@@ -33,17 +33,17 @@ function ItemsPage() {
         loadItemIcons();
     }, []);
 
-    const filteredItems = itemsList.filter((item) =>
+    const filteredItems = foodsList.filter((item) =>
         item.displayName.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
     console.log(filteredItems);
+
     return (
         <div className="flex flex-col w-full max-h-dvh scroll-auto overflow-auto h-auto">
             <div className="flex items-center justify-center mb-4 mt-4">
                 <Link to="/">
                     <h1 className="font-mcFont text-6xl text-slate-100 textShadow">
-                        Items list
+                        Food list
                     </h1>
                 </Link>
             </div>
@@ -62,37 +62,53 @@ function ItemsPage() {
                 />
             </div>
             <div className="mt-4 flex w-full flex-row flex-grow flex-wrap justify-center gap-4">
-                {filteredItems.map((item, index) => (
-                    <ItemCard
+                {filteredItems.map((food, index) => (
+                    <FoodCard
                         key={index}
-                        item={item}
-                        image={imagesUrls[item.name]}
+                        item={food}
+                        image={imagesUrls[food.name]}
                         handleClick={() => console.log("Item click!")}
-                    ></ItemCard>
+                    ></FoodCard>
                 ))}
             </div>
         </div>
     );
 }
 
-ItemCard.propTypes = {
+FoodCard.propTypes = {
     item: PropTypes.object.isRequired,
-    image: PropTypes.string,
+    image: PropTypes.string.isRequired,
     handleClick: PropTypes.func.isRequired,
 };
 
-function ItemCard({ item, image, handleClick }) {
+function FoodCard({ item, image, handleClick }) {
     return (
         <div
-            className="flex flex-col w-48 h-48 items-center justify-center p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105
-        bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-50 via-yellow-50 to-amber-200"
+            onClick={handleClick}
+            className="flex flex-col w-48 min-h-48 bg-gray-100 rounded-lg shadow-md flex flex-col items-center justify-center p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"
         >
-            <img src={image} alt={item.name} />
-            <h2 className="text-center">{item.displayName}</h2>
-            <p>Stack: {item.stackSize}</p>
-            {/*<button onClick={() => handleClick(item)}>Click me</button>*/}
+            <img
+                src={image}
+                alt={item.displayName}
+                className="w-24 h-24 mt-4"
+            />
+            <h2 className="text-center text-2xl font-mcFont text-slate-900 flex justify-center items-center">
+                {item.displayName}
+            </h2>
+            <p>
+                <span className="text-slate-700">
+                    Saturation: &nbsp;
+                    {item.saturation}
+                </span>
+            </p>
+            <p>
+                <span className="text-slate-700">
+                    Hunger points: &nbsp;
+                    {item.foodPoints}
+                </span>
+            </p>
         </div>
     );
 }
 
-export default ItemsPage;
+export default FoodPage;
