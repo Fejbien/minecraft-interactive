@@ -93,13 +93,13 @@ function FoodCard({ item, image, handleClick }) {
                 {item.displayName}
             </h2>
             <p>
-                <span className="text-slate-700">
+                <span className="text-slate-800">
                     Saturation: &nbsp;
                     {item.saturation}
                 </span>
             </p>
             <p>
-                <span className="text-slate-700">
+                <span className="text-slate-800">
                     Hunger points: &nbsp;
                     {item.foodPoints}
                 </span>

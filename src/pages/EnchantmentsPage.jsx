@@ -81,7 +81,9 @@ function ItemCard({ item, image, handleClick }) {
         bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-50 via-yellow-50 to-amber-200"
         >
             <img src={image} alt={item.displayName} />
-            <h2 className="text-center">{item.displayName}</h2>
+            <h2 className="text-center font-mcFont text-3xl">
+                {item.displayName}
+            </h2>
             <p>Max lvl: {item.maxLevel}</p>
             <p>Treasure only: {item.treasureOnly ? "Yes" : "No"}</p>
             <p>Curse: {item.curse ? "Yes" : "No"}</p>

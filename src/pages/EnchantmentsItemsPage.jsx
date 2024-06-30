@@ -2,6 +2,9 @@ import enchantmentsList from "../data/enchantments.json";
 import itemsList from "../data/items.json";
 import { Link } from "react-router-dom";
 import { HorizontalEndRodBar } from "../components/HorizontalEndRodBar";
+import { useState } from "react";
+
+import PropTypes from "prop-types";
 
 // TODO:
 // 1. Add better styling to the page
@@ -33,6 +36,8 @@ function EnchantmentsItemsPage() {
           )
         : [];
 
+    console.log(enchantmentsForSelectedItem);
+
     return (
         <div className="flex flex-col w-full max-h-dvh scroll-auto overflow-auto h-auto text-white">
             <div className="flex items-center justify-center mb-4 mt-4">
@@ -51,7 +56,7 @@ function EnchantmentsItemsPage() {
                         setSearchQuery(e.target.value);
                         setSelectedItem(null); // Reset selected item when search query changes
                     }}
-                    className="input bg-gray-800 border border-gray-600 text-white p-2 rounded-md"
+                    className="input bg-gray-800 border border-gray-600 text-white p-2 mt-6 rounded-md"
                     placeholder="Search items..."
                 />
             </div>
@@ -67,19 +72,38 @@ function EnchantmentsItemsPage() {
                 ))}
             </ul>
             {selectedItem && (
-                <div className="mt-4">
+                <div className="mt-4 flex flex-col w-full justify-center items-center">
                     <h2 className="text-center">
                         Available Enchantments for {selectedItem.name}:
                     </h2>
-                    <ul>
+                    <div className="flex flex-col w-full justify-center items-center gap-4">
                         {enchantmentsForSelectedItem.map((enchantment) => (
-                            <li key={enchantment.id} className="p-1">
-                                {enchantment.name}
-                            </li>
+                            <EnchantTile
+                                key={enchantment.id}
+                                enchant={enchantment}
+                            />
                         ))}
-                    </ul>
+                    </div>
                 </div>
             )}
+        </div>
+    );
+}
+
+EnchantTile.propTypes = {
+    enchant: PropTypes.object.isRequired,
+};
+
+function EnchantTile({ enchant }) {
+    console.log(enchant);
+    return (
+        <div className="text-slate-900 bg-gray-100 rounded-lg shadow-md w-3/5 flex flex-row items-center justify-evenly p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">
+            <h2 className="text-center">{enchant.displayName}</h2>
+            <p className="">Max lvl: {enchant.maxLevel}</p>
+            <p>Treasure only: {enchant.treasureOnly ? "Yes" : "No"}</p>
+            <p>Curse: {enchant.curse ? "Yes" : "No"}</p>
+            <p>Tradeable: {enchant.tradeable ? "Yes" : "No"}</p>
+            {/*<button onClick={() => handleClick(item)}>Click me</button>*/}
         </div>
     );
 }
