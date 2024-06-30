@@ -10,5 +10,9 @@
     {
         "link": "/enchants",
         "name": "Enchants list"
+    },
+    {
+        "link": "/enchantsItems",
+        "name": "Enchants for items"
     }
 ]

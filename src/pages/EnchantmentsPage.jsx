@@ -1,10 +1,10 @@
-import itemsList from "../data/items.json";
+import enchantmentsList from "../data/enchantments.json";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { HorizontalEndRodBar } from "../components/HorizontalEndRodBar";
 
-function ItemsPage() {
+function EnchantmentsPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [imagesUrls, setImagesUrls] = useState({});
 
@@ -12,19 +12,16 @@ function ItemsPage() {
         const loadItemIcons = async () => {
             try {
                 const icons = {};
-                for (const item of itemsList) {
-                    const response = await fetch(
-                        `../itemIcons/${item.name}.png`
-                    );
-                    if (response.ok) {
-                        const blob = await response.blob();
-                        const url = URL.createObjectURL(blob);
-                        icons[item.name] = url;
-                        setImagesUrls((prevUrls) => ({
-                            ...prevUrls,
-                            [item.name]: url,
-                        }));
-                    }
+
+                const response = await fetch(`../itemIcons/enchanted_book.png`);
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    icons["book"] = url;
+                    setImagesUrls((prevUrls) => ({
+                        ...prevUrls,
+                        ["book"]: url,
+                    }));
                 }
             } catch (error) {
                 console.error("Error loading item icons:", error);
@@ -34,7 +31,7 @@ function ItemsPage() {
         loadItemIcons();
     }, []);
 
-    const filteredItems = itemsList.filter((item) =>
+    const filteredItems = enchantmentsList.filter((item) =>
         item.displayName.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
@@ -43,7 +40,7 @@ function ItemsPage() {
             <div className="flex items-center justify-center mb-4 mt-4">
                 <Link to="/">
                     <h1 className="font-mcFont text-6xl text-slate-100 textShadow">
-                        Items list
+                        Enchanted book List
                     </h1>
                 </Link>
             </div>
@@ -62,7 +59,7 @@ function ItemsPage() {
                     <ItemCard
                         key={index}
                         item={item}
-                        image={imagesUrls[item.name]}
+                        image={imagesUrls["book"]}
                         handleClick={() => console.log("Item click!")}
                     ></ItemCard>
                 ))}
@@ -80,15 +77,18 @@ ItemCard.propTypes = {
 function ItemCard({ item, image, handleClick }) {
     return (
         <div
-            className="flex flex-col w-48 h-48 items-center justify-center p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105
+            className="flex flex-col w-48 h-64 items-center justify-center p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105
         bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-50 via-yellow-50 to-amber-200"
         >
-            <img src={image} alt={item.name} />
+            <img src={image} alt={item.displayName} />
             <h2 className="text-center">{item.displayName}</h2>
-            <p>Stack: {item.stackSize}</p>
+            <p>Max lvl: {item.maxLevel}</p>
+            <p>Treasure only: {item.treasureOnly ? "Yes" : "No"}</p>
+            <p>Curse: {item.curse ? "Yes" : "No"}</p>
+            <p>Tradeable: {item.tradeable ? "Yes" : "No"}</p>
             {/*<button onClick={() => handleClick(item)}>Click me</button>*/}
         </div>
     );
 }
 
-export default ItemsPage;
+export default EnchantmentsPage;

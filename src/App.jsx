@@ -8,6 +8,8 @@ import NoPage from "./pages/NoPage";
 
 import ItemsPage from "./pages/ItemsPage";
 import FoodPage from "./pages/FoodPage";
+import EnchantmentsPage from "./pages/EnchantmentsPage";
+import EnchantmentsItemsPage from "./pages/EnchantmentsItemsPage";
 
 function App() {
     return (
@@ -21,6 +23,11 @@ function App() {
                     <Route path="*" element={<NoPage />} />
                     <Route path="/items" element={<ItemsPage />} />
                     <Route path="/foods" element={<FoodPage />} />
+                    <Route path="/enchants" element={<EnchantmentsPage />} />
+                    <Route
+                        path="/enchantsItems"
+                        element={<EnchantmentsItemsPage />}
+                    />
                 </Routes>
             </BrowserRouter>
         </div>
