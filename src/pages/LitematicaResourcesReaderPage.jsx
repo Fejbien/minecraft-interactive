@@ -116,6 +116,7 @@ function LitematicaResourcesPage({ imagesUrls }) {
                     accept=".litematic"
                     multiple={false}
                     onChange={handleFileUpload}
+                    className="bg-gray-800 text-white px-4 py-2 rounded-md"
                 />
             </div>
             <div className="w-full">
