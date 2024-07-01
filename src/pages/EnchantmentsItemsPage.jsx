@@ -39,7 +39,7 @@ function EnchantmentsItemsPage() {
     console.log(enchantmentsForSelectedItem);
 
     return (
-        <div className="flex flex-col w-full max-h-dvh scroll-auto overflow-auto h-auto text-white">
+        <div className="flex flex-col w-full max-h-dvh h-dvh scroll-auto overflow-auto text-white">
             <div className="flex items-center justify-center mb-4 mt-4">
                 <Link to="/">
                     <h1 className="font-mcFont text-6xl text-center textShadow">
