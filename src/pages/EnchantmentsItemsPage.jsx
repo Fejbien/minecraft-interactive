@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 // 1. Add better styling to the page
 // 2. Add every item entire an imagr to check on
 // 3. Add better text for the avaiable enchantments
+// 4. Add a way to click on the enchantment and see more details (hide current info beside max level)
 
 EnchantmentsItemsPage.propTypes = {
     imagesUrls: PropTypes.object.isRequired,
@@ -40,8 +41,6 @@ function EnchantmentsItemsPage({ imagesUrls }) {
           )
         : [];
 
-    console.log(enchantmentsForSelectedItem);
-
     return (
         <div className="flex flex-col w-full max-h-dvh h-dvh scroll-auto overflow-auto text-white">
             <div className="flex items-center justify-center mb-4 mt-4">
@@ -70,6 +69,7 @@ function EnchantmentsItemsPage({ imagesUrls }) {
                         <SuggestionItem
                             key={item.name}
                             item={item}
+                            image={imagesUrls[item.name]}
                             handleClick={() => handleSelectItem(item)}
                         />
                     ))}
@@ -99,13 +99,19 @@ SuggestionItem.propTypes = {
     handleClick: PropTypes.func.isRequired,
 };
 
-function SuggestionItem({ item, handleClick }) {
+function SuggestionItem({ item, handleClick, image }) {
     return (
         <div
             onClick={handleClick}
-            className="suggestion-item text-center p-2 text-slate-800 font-mcFont cursor-pointer bg-slate-50 rounded-md text-4xl
+            className="flex flex-row justify-center items-center
+            suggestion-item text-center p-2 text-slate-800 font-mcFont cursor-pointer bg-slate-50 rounded-md text-4xl
             hover:bg-slate-100 transition duration-300 ease-in-out transform hover:scale-105"
         >
+            <img
+                src={image}
+                alt={item.displayName}
+                className="w-12 h-12 mr-4"
+            />
             {item.displayName}
         </div>
     );
@@ -116,7 +122,6 @@ EnchantTile.propTypes = {
 };
 
 function EnchantTile({ enchant }) {
-    console.log(enchant);
     return (
         <div className="text-slate-900 bg-gray-100 w-3/5 flex flex-row items-center justify-evenly p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">
             <h2 className="text-center font-mcFont text-4xl">
