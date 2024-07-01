@@ -13,6 +13,17 @@ function LitematicaResourcesPage({ imagesUrls }) {
     const [file, setFile] = useState(null);
     const [resourcesList, setResourcesList] = useState(null);
 
+    const mapper = {
+        redstone_wire: "redstone",
+        lava_cauldron: "cauldron",
+        lava: "lava_bucket",
+        water: "water_bucket",
+        stone_brick: "stone_bricks",
+        carrots: "carrot",
+    };
+
+    const ignoreList = ["air", "bubble_column", "piston_head"];
+
     useEffect(() => {
         const loadResources = async () => {
             if (!file) return;
@@ -30,13 +41,15 @@ function LitematicaResourcesPage({ imagesUrls }) {
                 resources.forEach((resource) => {
                     resource.name = resource.name.replace("minecraft:", "");
                     resource.name = resource.name.replace(/\[.*?\]/, "");
-                    if (resource.name == "air") return;
+                    resource.name = resource.name.replace("_wall", "");
+                    resource.name = resource.name.replace("wall_", "");
 
-                    if (itemCounts[resource.name]) {
-                        itemCounts[resource.name]++;
-                    } else {
-                        itemCounts[resource.name] = 1;
-                    }
+                    if (ignoreList.includes(resource.name)) return;
+                    if (mapper[resource.name])
+                        resource.name = mapper[resource.name];
+
+                    if (itemCounts[resource.name]) itemCounts[resource.name]++;
+                    else itemCounts[resource.name] = 1;
                 });
 
                 const sortedResources = Object.entries(itemCounts).sort(
@@ -55,6 +68,38 @@ function LitematicaResourcesPage({ imagesUrls }) {
         const selectedFile = event.target.files[0];
         setFile(selectedFile);
     };
+
+    const resourcesListHtml = Object.keys(resourcesList).map(
+        (resource, index) => {
+            const item = itemsList.find((item) => item.name === resource);
+
+            return (
+                <div
+                    key={index}
+                    className="w-3/5 flex flex-row justify-evenly items-center bg-slate-100 bg-opacity-80 p-2 rounded-md m-2"
+                >
+                    <img
+                        src={imagesUrls[resource]}
+                        alt={resource}
+                        className="w-12 h-12"
+                    ></img>
+                    <p className="text-3xl font-mcFont">
+                        {item?.displayName || resource}
+                    </p>
+                    <p className="text-xl">Count: {resourcesList[resource]}</p>
+                    {resourcesList[resource] >= 64 && (
+                        <p className="text-xl">
+                            {"  "}
+                            Which is:{"  "}
+                            {Math.floor(item?.stackSize || 64)}
+                            {" Stacks and "}
+                            {resourcesList[resource] % item?.stackSize}
+                        </p>
+                    )}
+                </div>
+            );
+        }
+    );
 
     return (
         <div className="flex flex-col w-full max-h-dvh scroll-auto overflow-auto h-auto">
@@ -76,38 +121,7 @@ function LitematicaResourcesPage({ imagesUrls }) {
             </div>
             <div className="w-full">
                 <div className="flex flex-col justify-center items-center">
-                    {resourcesList &&
-                        Object.keys(resourcesList).map((resource, index) => (
-                            <div
-                                key={index}
-                                className="w-3/5 flex flex-row justify-evenly items-center bg-slate-100 bg-opacity-80 p-2 rounded-md m-2"
-                            >
-                                <img
-                                    src={imagesUrls[resource]}
-                                    alt={resource}
-                                    className="w-12 h-12"
-                                ></img>
-                                <p className="text-3xl font-mcFont">
-                                    {itemsList.find(
-                                        (item) => item.name === resource
-                                    )?.displayName || resource}
-                                </p>
-                                <p className="text-xl">
-                                    Count: {resourcesList[resource]}
-                                </p>
-                                {resourcesList[resource] >= 64 && (
-                                    <p className="text-xl">
-                                        {"  "}
-                                        Which is:{"  "}
-                                        {Math.floor(
-                                            resourcesList[resource] / 64
-                                        )}
-                                        {" Stacks and "}
-                                        {resourcesList[resource] % 64}
-                                    </p>
-                                )}
-                            </div>
-                        ))}
+                    {resourcesList && resourcesListHtml}
                 </div>
             </div>
         </div>
