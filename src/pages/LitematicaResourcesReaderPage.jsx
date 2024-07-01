@@ -66,7 +66,7 @@ function LitematicaResourcesPage({ imagesUrls }) {
                 </Link>
             </div>
             <HorizontalEndRodBar />
-            <div className="w-full flex justify-center mt-4">
+            <div className="w-full flex justify-center mt-4 mb-4">
                 <input
                     type="file"
                     accept=".litematic"
@@ -80,19 +80,32 @@ function LitematicaResourcesPage({ imagesUrls }) {
                         Object.keys(resourcesList).map((resource, index) => (
                             <div
                                 key={index}
-                                className="w-2/5 flex flex-row justify-evenly items-center bg-slate-300 bg-opacity-50 p-2 rounded-md m-2"
+                                className="w-3/5 flex flex-row justify-evenly items-center bg-slate-100 bg-opacity-80 p-2 rounded-md m-2"
                             >
                                 <img
                                     src={imagesUrls[resource]}
                                     alt={resource}
                                     className="w-12 h-12"
                                 ></img>
-                                <p>
+                                <p className="text-3xl font-mcFont">
                                     {itemsList.find(
                                         (item) => item.name === resource
                                     )?.displayName || resource}
                                 </p>
-                                <p>{resourcesList[resource]}</p>
+                                <p className="text-xl">
+                                    Count: {resourcesList[resource]}
+                                </p>
+                                {resourcesList[resource] >= 64 && (
+                                    <p className="text-xl">
+                                        {"  "}
+                                        Which is:{"  "}
+                                        {Math.floor(
+                                            resourcesList[resource] / 64
+                                        )}
+                                        {" Stacks and "}
+                                        {resourcesList[resource] % 64}
+                                    </p>
+                                )}
                             </div>
                         ))}
                 </div>
