@@ -88,11 +88,9 @@ function LitematicaResourcesPage({ imagesUrls }) {
                                     className="w-12 h-12"
                                 ></img>
                                 <p>
-                                    {
-                                        itemsList.find(
-                                            (item) => item.name === resource
-                                        )?.displayName
-                                    }
+                                    {itemsList.find(
+                                        (item) => item.name === resource
+                                    )?.displayName || resource}
                                 </p>
                                 <p>{resourcesList[resource]}</p>
                             </div>
