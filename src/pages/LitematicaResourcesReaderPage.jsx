@@ -11,7 +11,7 @@ LitematicaResourcesPage.propTypes = {
 
 function LitematicaResourcesPage({ imagesUrls }) {
     const [file, setFile] = useState(null);
-    const [resourcesList, setResourcesList] = useState(null);
+    const [resourcesList, setResourcesList] = useState({});
 
     const mapper = {
         redstone_wire: "redstone",
