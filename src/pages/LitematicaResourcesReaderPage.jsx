@@ -1,8 +1,9 @@
-import enchantmentsList from "../data/enchantments.json";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import itemsList from "../data/items.json";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { HorizontalEndRodBar } from "../components/HorizontalEndRodBar";
+import { Litematic } from "@kleppe/litematic-reader";
 
 LitematicaResourcesPage.propTypes = {
     imagesUrls: PropTypes.object.isRequired,
@@ -10,11 +11,49 @@ LitematicaResourcesPage.propTypes = {
 
 function LitematicaResourcesPage({ imagesUrls }) {
     const [file, setFile] = useState(null);
+    const [resourcesList, setResourcesList] = useState(null);
+
+    useEffect(() => {
+        const loadResources = async () => {
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const arrayBuffer = e.target?.result;
+                let litematic = new Litematic(arrayBuffer);
+                const blocks = await litematic.getAllBlocks();
+                const resources = blocks.map((block) => ({
+                    name: block.block,
+                }));
+
+                const itemCounts = {};
+                resources.forEach((resource) => {
+                    resource.name = resource.name.replace("minecraft:", "");
+                    resource.name = resource.name.replace(/\[.*?\]/, "");
+                    if (resource.name == "air") return;
+
+                    if (itemCounts[resource.name]) {
+                        itemCounts[resource.name]++;
+                    } else {
+                        itemCounts[resource.name] = 1;
+                    }
+                });
+
+                const sortedResources = Object.entries(itemCounts).sort(
+                    (a, b) => b[1] - a[1]
+                );
+                setResourcesList(Object.fromEntries(sortedResources));
+                console.log(itemCounts);
+            };
+            reader.readAsArrayBuffer(file);
+        };
+
+        loadResources();
+    }, [file]);
 
     const handleFileUpload = (event) => {
         const selectedFile = event.target.files[0];
         setFile(selectedFile);
-        console.log(selectedFile);
     };
 
     return (
@@ -27,12 +66,39 @@ function LitematicaResourcesPage({ imagesUrls }) {
                 </Link>
             </div>
             <HorizontalEndRodBar />
-            <input
-                type="file"
-                accept=".litematic"
-                multiple={false}
-                onChange={handleFileUpload}
-            />
+            <div className="w-full flex justify-center mt-4">
+                <input
+                    type="file"
+                    accept=".litematic"
+                    multiple={false}
+                    onChange={handleFileUpload}
+                />
+            </div>
+            <div className="w-full">
+                <div className="flex flex-col justify-center items-center">
+                    {resourcesList &&
+                        Object.keys(resourcesList).map((resource, index) => (
+                            <div
+                                key={index}
+                                className="w-2/5 flex flex-row justify-evenly items-center bg-slate-300 bg-opacity-50 p-2 rounded-md m-2"
+                            >
+                                <img
+                                    src={imagesUrls[resource]}
+                                    alt={resource}
+                                    className="w-12 h-12"
+                                ></img>
+                                <p>
+                                    {
+                                        itemsList.find(
+                                            (item) => item.name === resource
+                                        )?.displayName
+                                    }
+                                </p>
+                                <p>{resourcesList[resource]}</p>
+                            </div>
+                        ))}
+                </div>
+            </div>
         </div>
     );
 }
