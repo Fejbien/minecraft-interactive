@@ -14,5 +14,9 @@
     {
         "link": "/enchantsItems",
         "name": "Enchants for items"
+    },
+    {
+        "link": "/litematicaResources",
+        "name": "Litematica resources list"
     }
 ]

@@ -11,7 +11,11 @@ import PropTypes from "prop-types";
 // 2. Add every item entire an imagr to check on
 // 3. Add better text for the avaiable enchantments
 
-function EnchantmentsItemsPage() {
+EnchantmentsItemsPage.propTypes = {
+    imagesUrls: PropTypes.object.isRequired,
+};
+
+function EnchantmentsItemsPage({ imagesUrls }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedItem, setSelectedItem] = useState(null);
 

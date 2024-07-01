@@ -1,38 +1,15 @@
 import itemsList from "../data/items.json";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { HorizontalEndRodBar } from "../components/HorizontalEndRodBar";
 
-function ItemsPage() {
+ItemsPage.propTypes = {
+    imagesUrls: PropTypes.object.isRequired,
+};
+
+function ItemsPage({ imagesUrls }) {
     const [searchQuery, setSearchQuery] = useState("");
-    const [imagesUrls, setImagesUrls] = useState({});
-
-    useEffect(() => {
-        const loadItemIcons = async () => {
-            try {
-                const icons = {};
-                for (const item of itemsList) {
-                    const response = await fetch(
-                        `../itemIcons/${item.name}.png`
-                    );
-                    if (response.ok) {
-                        const blob = await response.blob();
-                        const url = URL.createObjectURL(blob);
-                        icons[item.name] = url;
-                        setImagesUrls((prevUrls) => ({
-                            ...prevUrls,
-                            [item.name]: url,
-                        }));
-                    }
-                }
-            } catch (error) {
-                console.error("Error loading item icons:", error);
-            }
-        };
-
-        loadItemIcons();
-    }, []);
 
     const filteredItems = itemsList.filter((item) =>
         item.displayName.toLowerCase().includes(searchQuery.toLowerCase())
