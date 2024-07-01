@@ -24,7 +24,9 @@ function EnchantmentsItemsPage({ imagesUrls }) {
     const filteredItems = itemsList.filter(
         (item) =>
             item.enchantCategories !== undefined &&
-            item.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+            item.displayName
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase()) &&
             searchQuery != ""
     );
 
