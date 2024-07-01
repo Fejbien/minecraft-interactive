@@ -57,15 +57,17 @@ function ItemsPage() {
                     className="p-2 border border-gray-300 rounded-md min-w-96 w-2/5"
                 />
             </div>
-            <div className="mt-4 flex w-full flex-row flex-grow flex-wrap justify-center gap-4">
-                {filteredItems.map((item, index) => (
-                    <ItemCard
-                        key={index}
-                        item={item}
-                        image={imagesUrls[item.name]}
-                        handleClick={() => console.log("Item click!")}
-                    ></ItemCard>
-                ))}
+            <div className="w-full flex justify-center items-center">
+                <div className="mt-4 max-w-[94%] flex flex-row flex-grow flex-wrap justify-center gap-4">
+                    {filteredItems.map((item, index) => (
+                        <ItemCard
+                            key={index}
+                            item={item}
+                            image={imagesUrls[item.name]}
+                            handleClick={() => console.log("Item click!")}
+                        ></ItemCard>
+                    ))}
+                </div>
             </div>
         </div>
     );
@@ -82,11 +84,14 @@ function ItemCard({ item, image, handleClick }) {
         <div
             className="flex flex-col w-48 h-48 items-center justify-center p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105
         bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-50 via-yellow-50 to-amber-200"
+            onClick={handleClick}
         >
             <img src={image} alt={item.name} />
-            <h2 className="text-center">{item.displayName}</h2>
+            <h2 className="text-center font-mcFont text-2xl">
+                {item.displayName}
+            </h2>
             <p>Stack: {item.stackSize}</p>
-            {/*<button onClick={() => handleClick(item)}>Click me</button>*/}
+            <p>Id: {item.id}</p>
         </div>
     );
 }

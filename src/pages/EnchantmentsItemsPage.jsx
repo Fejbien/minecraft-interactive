@@ -114,7 +114,7 @@ EnchantTile.propTypes = {
 function EnchantTile({ enchant }) {
     console.log(enchant);
     return (
-        <div className="text-slate-900 bg-gray-100 rounded-lg shadow-md w-3/5 flex flex-row items-center justify-evenly p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">
+        <div className="text-slate-900 bg-gray-100 w-3/5 flex flex-row items-center justify-evenly p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">
             <h2 className="text-center font-mcFont text-4xl">
                 {enchant.displayName}
             </h2>

@@ -58,15 +58,17 @@ function FoodPage() {
                     className="p-2 border border-gray-300 rounded-md min-w-96 w-2/5"
                 />
             </div>
-            <div className="mt-4 flex w-full flex-row flex-grow flex-wrap justify-center gap-4">
-                {filteredItems.map((food, index) => (
-                    <FoodCard
-                        key={index}
-                        item={food}
-                        image={imagesUrls[food.name]}
-                        handleClick={() => console.log("Item click!")}
-                    ></FoodCard>
-                ))}
+            <div className="w-full flex justify-center items-center">
+                <div className="mt-4 flex max-w-[94%] flex-row flex-grow flex-wrap justify-center gap-4">
+                    {filteredItems.map((food, index) => (
+                        <FoodCard
+                            key={index}
+                            item={food}
+                            image={imagesUrls[food.name]}
+                            handleClick={() => console.log("Item click!")}
+                        ></FoodCard>
+                    ))}
+                </div>
             </div>
         </div>
     );
@@ -82,7 +84,8 @@ function FoodCard({ item, image, handleClick }) {
     return (
         <div
             onClick={handleClick}
-            className="flex flex-col w-48 min-h-48 bg-gray-100 rounded-lg shadow-md flex flex-col items-center justify-center p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"
+            className="flex flex-col w-48 min-h-48 items-center justify-center p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105
+        bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-50 via-yellow-50 to-amber-200"
         >
             <img
                 src={image}
