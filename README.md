@@ -1,5 +1,8 @@
 # minecraft tools (kinda :D)
 
+Don't mind the styling
+At first i want to make everything somewhat useable, then i will do some more styling to make it look useable 
+
 Basic Minecraft data and some more
 easily search for items, enchantments, and check all available data with ease,
 upload litematica file to get resources requiered and more
