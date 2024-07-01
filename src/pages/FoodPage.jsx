@@ -41,7 +41,6 @@ function FoodPage({ imagesUrls }) {
                             key={index}
                             item={food}
                             image={imagesUrls[food.name]}
-                            handleClick={() => console.log("Item click!")}
                         ></FoodCard>
                     ))}
                 </div>
@@ -52,16 +51,23 @@ function FoodPage({ imagesUrls }) {
 
 FoodCard.propTypes = {
     item: PropTypes.object.isRequired,
-    image: PropTypes.string.isRequired,
-    handleClick: PropTypes.func.isRequired,
+    image: PropTypes.string,
 };
 
-function FoodCard({ item, image, handleClick }) {
+function FoodCard({ item, image }) {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const toggleExpand = () => {
+        setIsExpanded(!isExpanded);
+    };
+
     return (
         <div
-            onClick={handleClick}
-            className="flex flex-col w-48 min-h-48 items-center justify-center p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105
-        bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-50 via-yellow-50 to-amber-200"
+            onClick={toggleExpand}
+            className={`flex flex-col ${
+                isExpanded ? "w-64 min-h-64" : "w-48 min-h-48"
+            } items-center justify-center p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105
+        bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-50 via-yellow-50 to-amber-200`}
         >
             <img
                 src={image}
@@ -72,17 +78,24 @@ function FoodCard({ item, image, handleClick }) {
                 {item.displayName}
             </h2>
             <p>
-                <span className="text-slate-800">
+                <span className="text-slate-800 text-xl">
                     Saturation: &nbsp;
                     {item.saturation}
                 </span>
             </p>
             <p>
-                <span className="text-slate-800">
+                <span className="text-slate-800 text-xl">
                     Hunger points: &nbsp;
                     {item.foodPoints}
                 </span>
             </p>
+            {isExpanded && (
+                <div className="text-slate-800 mt-4 text-center text-xl">
+                    <p>Stack size: {item.stackSize}</p>
+                    <p>Effective quality: {item.effectiveQuality}</p>
+                    <p>Saturation ratio: {item.saturationRatio}</p>
+                </div>
+            )}
         </div>
     );
 }

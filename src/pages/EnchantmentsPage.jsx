@@ -40,7 +40,7 @@ function EnchantmentsPage({ imagesUrls }) {
                         <ItemCard
                             key={index}
                             item={item}
-                            image={imagesUrls["book"]}
+                            image={imagesUrls["enchanted_book"]}
                             handleClick={() => console.log("Item click!")}
                         ></ItemCard>
                     ))}
