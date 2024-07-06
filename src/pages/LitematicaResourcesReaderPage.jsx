@@ -77,24 +77,35 @@ function LitematicaResourcesPage({ imagesUrls }) {
                     key={index}
                     className="w-3/5 flex flex-row justify-evenly items-center bg-slate-100 bg-opacity-80 p-2 rounded-md m-2"
                 >
-                    <img
-                        src={imagesUrls[resource]}
-                        alt={resource}
-                        className="w-12 h-12"
-                    ></img>
-                    <p className="text-3xl font-mcFont">
-                        {item?.displayName || resource}
-                    </p>
-                    <p className="text-xl">Count: {resourcesList[resource]}</p>
-                    {resourcesList[resource] >= 64 && (
-                        <p className="text-xl">
-                            {"  "}
-                            Which is:{"  "}
-                            {Math.floor(item?.stackSize || 64)}
-                            {" Stacks and "}
-                            {resourcesList[resource] % item?.stackSize}
+                    <div className="w-1/12 flex justify-center">
+                        <img
+                            src={imagesUrls[resource]}
+                            alt={resource}
+                            className="w-12 h-12"
+                        ></img>
+                    </div>
+                    <div className="w-2/6 flex justify-center">
+                        <p className="text-3xl font-mcFont text-center">
+                            {item?.displayName || resource}
                         </p>
-                    )}
+                    </div>
+                    <div className="w-7/12 flex justify-evenly">
+                        <p className="text-xl text-center">
+                            Count: {resourcesList[resource]}
+                        </p>
+                        {resourcesList[resource] >= 64 && (
+                            <p className="text-xl text-center">
+                                {"  "}
+                                Which is:{"  "}
+                                {Math.floor(
+                                    resourcesList[resource] / item.stackSize ||
+                                        64
+                                )}
+                                {" Stacks and "}
+                                {resourcesList[resource] % item?.stackSize}
+                            </p>
+                        )}
+                    </div>
                 </div>
             );
         }
