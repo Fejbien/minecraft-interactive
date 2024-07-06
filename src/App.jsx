@@ -15,34 +15,6 @@ import EnchantmentsItemsPage from "./pages/EnchantmentsItemsPage";
 import LitematicaResourcesPage from "./pages/LitematicaResourcesReaderPage";
 
 function App() {
-    const [imagesUrls, setImagesUrls] = useState({});
-
-    useEffect(() => {
-        const loadItemIcons = async () => {
-            try {
-                const icons = {};
-                for (const item of itemsList) {
-                    const response = await fetch(
-                        `../itemIcons/${item.name}.png`
-                    );
-                    if (response.ok) {
-                        const blob = await response.blob();
-                        const url = URL.createObjectURL(blob);
-                        icons[item.name] = url;
-                        setImagesUrls((prevUrls) => ({
-                            ...prevUrls,
-                            [item.name]: url,
-                        }));
-                    }
-                }
-            } catch (error) {
-                console.error("Error loading item icons:", error);
-            }
-        };
-
-        loadItemIcons();
-    }, []);
-
     return (
         <div
             className="min-h-dvh min-w-[100dvw] fixed bg-cover bg-center bg-no-repeat bg-fixed bg-opacity-50"
@@ -52,29 +24,16 @@ function App() {
                 <Routes>
                     <Route index element={<Home />} />
                     <Route path="*" element={<NoPage />} />
-                    <Route
-                        path="/items"
-                        element={<ItemsPage imagesUrls={imagesUrls} />}
-                    />
-                    <Route
-                        path="/foods"
-                        element={<FoodPage imagesUrls={imagesUrls} />}
-                    />
-                    <Route
-                        path="/enchants"
-                        element={<EnchantmentsPage imagesUrls={imagesUrls} />}
-                    />
+                    <Route path="/items" element={<ItemsPage />} />
+                    <Route path="/foods" element={<FoodPage />} />
+                    <Route path="/enchants" element={<EnchantmentsPage />} />
                     <Route
                         path="/enchantsItems"
-                        element={
-                            <EnchantmentsItemsPage imagesUrls={imagesUrls} />
-                        }
+                        element={<EnchantmentsItemsPage />}
                     />
                     <Route
                         path="/litematicaResources"
-                        element={
-                            <LitematicaResourcesPage imagesUrls={imagesUrls} />
-                        }
+                        element={<LitematicaResourcesPage />}
                     />
                 </Routes>
             </BrowserRouter>

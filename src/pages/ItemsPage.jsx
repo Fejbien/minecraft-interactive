@@ -4,11 +4,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { HorizontalEndRodBar } from "../components/HorizontalEndRodBar";
 
-ItemsPage.propTypes = {
-    imagesUrls: PropTypes.object.isRequired,
-};
-
-function ItemsPage({ imagesUrls }) {
+function ItemsPage() {
     const [searchQuery, setSearchQuery] = useState("");
 
     const filteredItems = itemsList.filter((item) =>
@@ -40,7 +36,7 @@ function ItemsPage({ imagesUrls }) {
                         <ItemCard
                             key={index}
                             item={item}
-                            image={imagesUrls[item.name]}
+                            image={`/itemIcons/${item.name}.png`}
                             handleClick={() => console.log("Item click!")}
                         ></ItemCard>
                     ))}
@@ -63,7 +59,10 @@ function ItemCard({ item, image, handleClick }) {
         bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-50 via-yellow-50 to-amber-200"
             onClick={handleClick}
         >
-            <img src={image} alt={item.name} />
+            <div
+                style={{ backgroundImage: `url(${image})` }}
+                className="w-12 h-12"
+            />
             <h2 className="text-center font-mcFont text-2xl">
                 {item.displayName}
             </h2>

@@ -12,11 +12,7 @@ import PropTypes from "prop-types";
 // 3. Add better text for the avaiable enchantments
 // 4. Add a way to click on the enchantment and see more details (hide current info beside max level)
 
-EnchantmentsItemsPage.propTypes = {
-    imagesUrls: PropTypes.object.isRequired,
-};
-
-function EnchantmentsItemsPage({ imagesUrls }) {
+function EnchantmentsItemsPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedItem, setSelectedItem] = useState(null);
 
@@ -71,7 +67,7 @@ function EnchantmentsItemsPage({ imagesUrls }) {
                         <SuggestionItem
                             key={item.name}
                             item={item}
-                            image={imagesUrls[item.name]}
+                            image={`/itemIcons/${item.name}.png`}
                             handleClick={() => handleSelectItem(item)}
                         />
                     ))}
@@ -99,6 +95,7 @@ function EnchantmentsItemsPage({ imagesUrls }) {
 SuggestionItem.propTypes = {
     item: PropTypes.object.isRequired,
     handleClick: PropTypes.func.isRequired,
+    image: PropTypes.string,
 };
 
 function SuggestionItem({ item, handleClick, image }) {
@@ -109,9 +106,8 @@ function SuggestionItem({ item, handleClick, image }) {
             suggestion-item text-center p-2 text-slate-800 font-mcFont cursor-pointer bg-slate-50 rounded-md text-4xl
             hover:bg-slate-100 transition duration-300 ease-in-out transform hover:scale-105"
         >
-            <img
-                src={image}
-                alt={item.displayName}
+            <div
+                style={{ backgroundImage: `url(${image})` }}
                 className="w-12 h-12 mr-4"
             />
             {item.displayName}

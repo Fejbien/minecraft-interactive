@@ -4,11 +4,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { HorizontalEndRodBar } from "../components/HorizontalEndRodBar";
 
-FoodPage.propTypes = {
-    imagesUrls: PropTypes.object.isRequired,
-};
-
-function FoodPage({ imagesUrls }) {
+function FoodPage() {
     const [searchQuery, setSearchQuery] = useState("");
 
     const filteredItems = foodsList.filter((item) =>
@@ -40,7 +36,7 @@ function FoodPage({ imagesUrls }) {
                         <FoodCard
                             key={index}
                             item={food}
-                            image={imagesUrls[food.name]}
+                            image={`/itemIcons/${food.name}.png`}
                         ></FoodCard>
                     ))}
                 </div>
@@ -69,10 +65,9 @@ function FoodCard({ item, image }) {
             } items-center justify-center p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105
         bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-50 via-yellow-50 to-amber-200`}
         >
-            <img
-                src={image}
-                alt={item.displayName}
-                className="w-24 h-24 mt-4"
+            <div
+                style={{ backgroundImage: `url(${image})` }}
+                className="w-24 h-24 mt-4 bg-cover"
             />
             <h2 className="text-center text-2xl font-mcFont text-slate-900 flex justify-center items-center">
                 {item.displayName}

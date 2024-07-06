@@ -4,11 +4,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { HorizontalEndRodBar } from "../components/HorizontalEndRodBar";
 
-EnchantmentsPage.propTypes = {
-    imagesUrls: PropTypes.object.isRequired,
-};
-
-function EnchantmentsPage({ imagesUrls }) {
+function EnchantmentsPage() {
     const [searchQuery, setSearchQuery] = useState("");
 
     const filteredItems = enchantmentsList.filter((item) =>
@@ -40,7 +36,7 @@ function EnchantmentsPage({ imagesUrls }) {
                         <ItemCard
                             key={index}
                             item={item}
-                            image={imagesUrls["enchanted_book"]}
+                            image={`/itemIcons/enchanted_book.png`}
                             handleClick={() => console.log("Item click!")}
                         ></ItemCard>
                     ))}

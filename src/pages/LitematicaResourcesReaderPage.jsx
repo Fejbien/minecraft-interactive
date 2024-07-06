@@ -1,15 +1,10 @@
-import PropTypes from "prop-types";
 import itemsList from "../data/items.json";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { HorizontalEndRodBar } from "../components/HorizontalEndRodBar";
 import { Litematic } from "@kleppe/litematic-reader";
 
-LitematicaResourcesPage.propTypes = {
-    imagesUrls: PropTypes.object.isRequired,
-};
-
-function LitematicaResourcesPage({ imagesUrls }) {
+function LitematicaResourcesPage() {
     const [file, setFile] = useState(null);
     const [resourcesList, setResourcesList] = useState({});
 
@@ -78,11 +73,12 @@ function LitematicaResourcesPage({ imagesUrls }) {
                     className="w-3/5 flex flex-row justify-evenly items-center bg-slate-100 bg-opacity-80 p-2 rounded-md m-2"
                 >
                     <div className="w-1/12 flex justify-center">
-                        <img
-                            src={imagesUrls[resource]}
-                            alt={resource}
+                        <div
+                            style={{
+                                backgroundImage: `url(/itemIcons/${item.name}.png)`,
+                            }}
                             className="w-12 h-12"
-                        ></img>
+                        ></div>
                     </div>
                     <div className="w-2/6 flex justify-center">
                         <p className="text-3xl font-mcFont text-center">
