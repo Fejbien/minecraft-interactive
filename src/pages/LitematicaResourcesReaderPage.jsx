@@ -35,6 +35,10 @@ function LitematicaResourcesPage() {
     };
 
     const handleExport = () => {
+        if (!file) {
+            return;
+        }
+
         const exportData = Object.entries(resourcesList)
             .map(([resource, count]) => {
                 const item = itemsList.find((item) => item.name === resource);
@@ -163,8 +167,9 @@ function LitematicaResourcesPage() {
                         <button
                             onClick={handleExport}
                             className="flex justify-center items-center text-slate-900 font-mcFont text-3xl border border-1 cursor-pointer border-gray-300 rounded-lg tracking-wide
-                            bg-slate-100 min-w-1/4 p-3 w-auto px-10
+                            bg-slate-100 min-w-1/4 p-3 w-auto px-10 disabled:opacity-50
                             hover:bg-slate-300 transition-colors duration-300 ease-in-out"
+                            disabled={!file}
                         >
                             Export
                         </button>
