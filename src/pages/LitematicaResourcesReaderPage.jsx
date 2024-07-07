@@ -1,5 +1,5 @@
 import itemsList from "../data/items.json";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { HorizontalEndRodBar } from "../components/HorizontalEndRodBar";
 import { Litematic } from "@kleppe/litematic-reader";
@@ -10,7 +10,51 @@ function LitematicaResourcesPage() {
     const [file, setFile] = useState(null);
     const [resourcesList, setResourcesList] = useState({});
 
-    // Sadly this mapper is required because the litematic reader uses different names for some blocks
+    const fileInputRef = useRef(null);
+    const [fileName, setFileName] = useState("Choose a file..."); // Default text
+
+    const handleReset = () => {
+        setFile(null);
+        setResourcesList({});
+        setFileName("Choose a file...");
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
+    };
+
+    const handleFileUpload = (event) => {
+        const file = event.target.files[0];
+        setFile(file);
+        if (file) {
+            setFileName(file.name);
+        }
+    };
+
+    const handleClick = () => {
+        fileInputRef.current.click();
+    };
+
+    const handleExport = () => {
+        const exportData = Object.entries(resourcesList)
+            .map(([resource, count]) => {
+                const item = itemsList.find((item) => item.name === resource);
+                return `${item.displayName} - ${count}`;
+            })
+            .join("\n");
+
+        const fileNameStripped = fileName.replace(".litematic", "");
+
+        const data = new Blob([exportData], {
+            type: "text/plain",
+        });
+        const url = URL.createObjectURL(data);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `resources for ${fileNameStripped}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
     const mapper = {
         redstone_wire: "redstone",
         lava_cauldron: "cauldron",
@@ -61,11 +105,6 @@ function LitematicaResourcesPage() {
         loadResources();
     }, [file]);
 
-    const handleFileUpload = (event) => {
-        const selectedFile = event.target.files[0];
-        setFile(selectedFile);
-    };
-
     const resourcesListHtml = Object.keys(resourcesList).map(
         (resource, index) => {
             const item = itemsList.find((item) => item.name === resource);
@@ -90,14 +129,47 @@ function LitematicaResourcesPage() {
                 </Link>
             </div>
             <HorizontalEndRodBar />
-            <div className="w-full flex justify-center mt-4 mb-4">
-                <input
-                    type="file"
-                    accept=".litematic"
-                    multiple={false}
-                    onChange={handleFileUpload}
-                    className="bg-gray-800 text-white px-4 py-2 rounded-md"
-                />
+            <div className="w-full flex flex-row justify-center">
+                <div className="flex flex-row w-3/5 justify-between items-center">
+                    <div>
+                        <button
+                            onClick={handleReset}
+                            className="flex justify-center items-center text-slate-900 font-mcFont text-3xl border border-1 cursor-pointer border-gray-300 rounded-lg tracking-wide
+                        bg-slate-100 min-w-1/4 p-3 w-auto px-10
+                        hover:bg-slate-300 transition-colors duration-300 ease-in-out"
+                        >
+                            Reset
+                        </button>
+                    </div>
+                    <div className="w-full flex justify-center mt-4 mb-4 text-center">
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept=".litematic"
+                            multiple={false}
+                            onChange={handleFileUpload}
+                            className="hidden"
+                        />
+                        <button
+                            onClick={handleClick}
+                            className="flex justify-center items-center text-slate-900 font-mcFont text-3xl border border-1 cursor-pointer border-gray-300 rounded-lg tracking-wide
+                    bg-slate-100 min-w-1/4 p-3 w-auto px-10
+                    hover:bg-slate-300 transition-colors duration-300 ease-in-out"
+                        >
+                            {fileName}
+                        </button>
+                    </div>
+                    <div>
+                        <button
+                            onClick={handleExport}
+                            className="flex justify-center items-center text-slate-900 font-mcFont text-3xl border border-1 cursor-pointer border-gray-300 rounded-lg tracking-wide
+                            bg-slate-100 min-w-1/4 p-3 w-auto px-10
+                            hover:bg-slate-300 transition-colors duration-300 ease-in-out"
+                        >
+                            Export
+                        </button>
+                    </div>
+                </div>
             </div>
             <div className="w-full">
                 <div className="flex flex-col justify-center items-center">

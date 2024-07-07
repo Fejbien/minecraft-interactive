@@ -34,7 +34,7 @@ function EnchantmentsItemsPage() {
         : [];
 
     return (
-        <div className="flex flex-col w-full max-h-dvh h-dvh scroll-auto overflow-auto text-white">
+        <div className="flex flex-col w-full max-h-dvh h-dvh scroll-auto overflow-auto text-white pb-12">
             <div className="flex items-center justify-center mb-4 mt-4">
                 <Link to="/">
                     <h1 className="font-mcFont text-6xl text-center textShadow">
@@ -150,32 +150,40 @@ function EnchantTile({ enchant }) {
             </div>
             {expanded && (
                 <div
-                    className={`flex flex-col mt-4 w-full p-6 transition-all duration-300 ease-in-out ${
+                    className={`flex flex-col mt-4 w-full transition-all duration-300 ease-in-out ${
                         expanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                     } overflow-hidden`}
                 >
-                    {!!enchant.exclude.length && (
-                        <p>
-                            The enchant can not be combineded with:
-                            <ul className="list-disc">
-                                {enchant.exclude.map((excluded, id) => {
-                                    const enchantDisplayName =
-                                        enchantmentsList.find(
-                                            (enchantment) =>
-                                                enchantment.name === excluded
-                                        ).displayName;
-                                    return (
-                                        <li key={id}>{enchantDisplayName}</li>
-                                    );
-                                })}
-                            </ul>
-                        </p>
-                    )}
-                    {!enchant.exclude.length && (
-                        <p>
-                            This enchant can be combined with any other enchant
-                        </p>
-                    )}
+                    <div className="w-2/5 flex flex-row items-center justify-evenly">
+                        {!!enchant.exclude.length && (
+                            <p>
+                                <span className="text-red-800 font-bold">
+                                    The enchant can not be combineded with:
+                                </span>
+                                <ul className="list-disc">
+                                    {enchant.exclude.map((excluded, id) => {
+                                        const enchantDisplayName =
+                                            enchantmentsList.find(
+                                                (enchantment) =>
+                                                    enchantment.name ===
+                                                    excluded
+                                            ).displayName;
+                                        return (
+                                            <li key={id}>
+                                                {enchantDisplayName}
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            </p>
+                        )}
+                        {!enchant.exclude.length && (
+                            <p className="text-green-800 font-bold text-center">
+                                This enchant can be combined with any other
+                                enchant
+                            </p>
+                        )}
+                    </div>
                 </div>
             )}
         </div>
