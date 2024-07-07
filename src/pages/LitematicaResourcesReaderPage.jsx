@@ -11,7 +11,7 @@ function LitematicaResourcesPage() {
     const [resourcesList, setResourcesList] = useState({});
 
     const fileInputRef = useRef(null);
-    const [fileName, setFileName] = useState("Choose a file..."); // Default text
+    const [fileName, setFileName] = useState("Choose a file...");
 
     const handleReset = () => {
         setFile(null);
