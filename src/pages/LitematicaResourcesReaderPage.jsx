@@ -177,7 +177,7 @@ function LitematicaResourcesPage() {
                 </div>
             </div>
             <div className="w-full">
-                <div className="flex flex-col justify-center items-center">
+                <div className="flex flex-col justify-center items-center mb-4">
                     {resourcesList && resourcesListHtml}
                 </div>
             </div>
