@@ -64,6 +64,7 @@ function FoodCard({ item, image }) {
                 isExpanded ? "w-64 min-h-64" : "w-48 min-h-48"
             } items-center justify-center p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105
         bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-50 via-yellow-50 to-amber-200`}
+            style={{ transition: "height 1s ease-in-out" }}
         >
             <div
                 style={{ backgroundImage: `url(${image})` }}

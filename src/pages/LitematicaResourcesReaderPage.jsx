@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 import { HorizontalEndRodBar } from "../components/HorizontalEndRodBar";
 import { Litematic } from "@kleppe/litematic-reader";
 
+// TODO:
+// 1. Make tile expandable to show more information
+// 2. Add stack information to the expanded section
+
 function LitematicaResourcesPage() {
     const [file, setFile] = useState(null);
     const [resourcesList, setResourcesList] = useState({});
@@ -86,11 +90,11 @@ function LitematicaResourcesPage() {
                         </p>
                     </div>
                     <div className="w-7/12 flex justify-evenly">
-                        <p className="text-xl text-center">
+                        <p className="text-xl text-center w-1/2">
                             Count: {resourcesList[resource]}
                         </p>
                         {resourcesList[resource] >= 64 && (
-                            <p className="text-xl text-center">
+                            <p className="text-xl text-center w-1/2">
                                 {"  "}
                                 Which is:{"  "}
                                 {Math.floor(
@@ -100,6 +104,9 @@ function LitematicaResourcesPage() {
                                 {" Stacks and "}
                                 {resourcesList[resource] % item?.stackSize}
                             </p>
+                        )}
+                        {resourcesList[resource] < 64 && (
+                            <p className="text-xl text-center w-1/2"></p>
                         )}
                     </div>
                 </div>

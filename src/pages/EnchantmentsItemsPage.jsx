@@ -7,16 +7,12 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 // TODO:
-// 1. Add better styling to the page
-// 2. Add every item entire an imagr to check on
-// 3. Add better text for the avaiable enchantments
-// 4. Add a way to click on the enchantment and see more details (hide current info beside max level)
+// 1. Add more information to the enchantment tile
 
 function EnchantmentsItemsPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedItem, setSelectedItem] = useState(null);
 
-    // Filter items based on search query
     const filteredItems = itemsList.filter(
         (item) =>
             item.enchantCategories !== undefined &&
@@ -26,13 +22,11 @@ function EnchantmentsItemsPage() {
             searchQuery != ""
     );
 
-    // Handle selecting an item
     const handleSelectItem = (item) => {
         setSelectedItem(item);
-        setSearchQuery(item.displayName); // Update the search query to the selected item's name
+        setSearchQuery(item.displayName);
     };
 
-    // Find enchantments for the selected item
     const enchantmentsForSelectedItem = selectedItem
         ? enchantmentsList.filter((enchantment) =>
               selectedItem.enchantCategories.includes(enchantment.category)
@@ -49,7 +43,7 @@ function EnchantmentsItemsPage() {
                 </Link>
             </div>
             <HorizontalEndRodBar />
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-4">
                 <input
                     type="text"
                     value={searchQuery}
@@ -57,7 +51,7 @@ function EnchantmentsItemsPage() {
                         setSearchQuery(e.target.value);
                         setSelectedItem(null); // Reset selected item when search query changes
                     }}
-                    className="input bg-gray-800 border border-gray-600 text-white p-2 mt-6 rounded-md"
+                    className="p-2 border border-gray-300 rounded-md min-w-96 w-2/5 text-black"
                     placeholder="Search items..."
                 />
             </div>
@@ -75,9 +69,6 @@ function EnchantmentsItemsPage() {
             </div>
             {selectedItem && (
                 <div className="mt-4 flex flex-col w-full justify-center items-center">
-                    <h2 className="text-center">
-                        Available Enchantments for {selectedItem.name}:
-                    </h2>
                     <div className="flex flex-col w-full justify-center items-center gap-4">
                         {enchantmentsForSelectedItem.map((enchantment) => (
                             <EnchantTile
@@ -120,16 +111,73 @@ EnchantTile.propTypes = {
 };
 
 function EnchantTile({ enchant }) {
+    const [expanded, setExpanded] = useState(false);
+
+    const handleExpand = () => {
+        setExpanded(!expanded);
+    };
+
     return (
-        <div className="text-slate-900 bg-gray-100 w-3/5 flex flex-row items-center justify-evenly p-4 rounded-md border border-gray-300 shadow-lg hover:bg-gray-200 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">
-            <h2 className="text-center font-mcFont text-4xl">
-                {enchant.displayName}
-            </h2>
-            <p className="">Max lvl: {enchant.maxLevel}</p>
-            <p>Treasure only: {enchant.treasureOnly ? "Yes" : "No"}</p>
-            <p>Curse: {enchant.curse ? "Yes" : "No"}</p>
-            <p>Tradeable: {enchant.tradeable ? "Yes" : "No"}</p>
-            {/*<button onClick={() => handleClick(item)}>Click me</button>*/}
+        <div
+            className=" text-slate-900 bg-gray-100 w-3/5 flex flex-col items-center justify-evenly p-4 rounded-md border border-gray-300 shadow-lg 
+            hover:bg-gray-200 cursor-pointer"
+            onClick={handleExpand}
+            style={{
+                transition:
+                    "max-height 0.3s ease-in-out, opacity 0.3s ease-in-out",
+                overflow: "hidden",
+                maxHeight: expanded ? "500px" : "150px",
+            }}
+        >
+            <div className="w-full flex flex-row items-center justify-evenly">
+                <h2 className="text-center font-mcFont text-4xl w-2/5">
+                    {enchant.displayName}
+                </h2>
+                <div className="flex flex-row w-3/5">
+                    <p className="text-center w-1/4">
+                        Max lvl: {enchant.maxLevel}
+                    </p>
+                    <p className="text-center w-1/4">
+                        Treasure only: {enchant.treasureOnly ? "Yes" : "No"}
+                    </p>
+                    <p className="text-center w-1/4">
+                        Curse: {enchant.curse ? "Yes" : "No"}
+                    </p>
+                    <p className="text-center w-1/4">
+                        Tradeable: {enchant.tradeable ? "Yes" : "No"}
+                    </p>
+                </div>
+            </div>
+            {expanded && (
+                <div
+                    className={`flex flex-col mt-4 w-full p-6 transition-all duration-300 ease-in-out ${
+                        expanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                    } overflow-hidden`}
+                >
+                    {!!enchant.exclude.length && (
+                        <p>
+                            The enchant can not be combineded with:
+                            <ul className="list-disc">
+                                {enchant.exclude.map((excluded, id) => {
+                                    const enchantDisplayName =
+                                        enchantmentsList.find(
+                                            (enchantment) =>
+                                                enchantment.name === excluded
+                                        ).displayName;
+                                    return (
+                                        <li key={id}>{enchantDisplayName}</li>
+                                    );
+                                })}
+                            </ul>
+                        </p>
+                    )}
+                    {!enchant.exclude.length && (
+                        <p>
+                            This enchant can be combined with any other enchant
+                        </p>
+                    )}
+                </div>
+            )}
         </div>
     );
 }
