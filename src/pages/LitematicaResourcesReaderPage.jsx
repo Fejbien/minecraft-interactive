@@ -4,14 +4,13 @@ import { Link } from "react-router-dom";
 import { HorizontalEndRodBar } from "../components/HorizontalEndRodBar";
 import { Litematic } from "@kleppe/litematic-reader";
 
-// TODO:
-// 1. Make tile expandable to show more information
-// 2. Add stack information to the expanded section
+import PropTypes from "prop-types";
 
 function LitematicaResourcesPage() {
     const [file, setFile] = useState(null);
     const [resourcesList, setResourcesList] = useState({});
 
+    // Sadly this mapper is required because the litematic reader uses different names for some blocks
     const mapper = {
         redstone_wire: "redstone",
         lava_cauldron: "cauldron",
@@ -70,46 +69,13 @@ function LitematicaResourcesPage() {
     const resourcesListHtml = Object.keys(resourcesList).map(
         (resource, index) => {
             const item = itemsList.find((item) => item.name === resource);
-
             return (
-                <div
+                <ItemTile
                     key={index}
-                    className="w-3/5 flex flex-row justify-evenly items-center bg-slate-100 bg-opacity-80 p-2 rounded-md m-2"
-                >
-                    <div className="w-1/12 flex justify-center">
-                        <div
-                            style={{
-                                backgroundImage: `url(/itemIcons/${item.name}.png)`,
-                            }}
-                            className="w-12 h-12"
-                        ></div>
-                    </div>
-                    <div className="w-2/6 flex justify-center">
-                        <p className="text-3xl font-mcFont text-center">
-                            {item?.displayName || resource}
-                        </p>
-                    </div>
-                    <div className="w-7/12 flex justify-evenly">
-                        <p className="text-xl text-center w-1/2">
-                            Count: {resourcesList[resource]}
-                        </p>
-                        {resourcesList[resource] >= 64 && (
-                            <p className="text-xl text-center w-1/2">
-                                {"  "}
-                                Which is:{"  "}
-                                {Math.floor(
-                                    resourcesList[resource] / item.stackSize ||
-                                        64
-                                )}
-                                {" Stacks and "}
-                                {resourcesList[resource] % item?.stackSize}
-                            </p>
-                        )}
-                        {resourcesList[resource] < 64 && (
-                            <p className="text-xl text-center w-1/2"></p>
-                        )}
-                    </div>
-                </div>
+                    item={item}
+                    resource={resource}
+                    resourcesList={resourcesList}
+                />
             );
         }
     );
@@ -138,6 +104,64 @@ function LitematicaResourcesPage() {
                     {resourcesList && resourcesListHtml}
                 </div>
             </div>
+        </div>
+    );
+}
+
+ItemTile.propTypes = {
+    item: PropTypes.object.isRequired,
+    resource: PropTypes.string.isRequired,
+    resourcesList: PropTypes.object.isRequired,
+};
+function ItemTile({ item, resource, resourcesList }) {
+    const [expanded, setExpanded] = useState(false);
+
+    const handleExpand = () => {
+        setExpanded(!expanded);
+    };
+
+    return (
+        <div
+            className="m-2 text-slate-900 bg-gray-100 w-3/5 flex flex-col items-center justify-evenly p-4 rounded-md border border-gray-300 shadow-lg 
+            hover:bg-gray-200 cursor-pointer"
+            onClick={handleExpand}
+            style={{
+                transition:
+                    "max-height 0.3s ease-in-out, opacity 0.3s ease-in-out",
+                overflow: "hidden",
+                maxHeight: expanded ? "500px" : "150px",
+            }}
+        >
+            <div className="flex flex-row justify-evenly items-center w-full">
+                <div className="w-1/12 flex justify-center">
+                    <div
+                        style={{
+                            backgroundImage: `url(/itemIcons/${item.name}.png)`,
+                        }}
+                        className="w-12 h-12"
+                    ></div>
+                </div>
+                <div className="w-2/6 flex justify-center">
+                    <p className="text-3xl font-mcFont text-center">
+                        {item?.displayName || resource}
+                    </p>
+                </div>
+                <p className="text-xl text-center">
+                    Count: {resourcesList[resource]}
+                </p>
+            </div>
+            {expanded && (
+                <div
+                    className={`flex flex-col mt-4 w-full p-6 transition-all duration-300 ease-in-out ${
+                        expanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                    } overflow-hidden`}
+                >
+                    <p className="text-center">
+                        Here will be information about stack sizes requierd and
+                        some extras i guess
+                    </p>
+                </div>
+            )}
         </div>
     );
 }
